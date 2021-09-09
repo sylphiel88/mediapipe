@@ -38,10 +38,12 @@ class handDetector:
         tipIds = [4, 8, 12, 16, 20]
         fingers = []
         if len(lmList) != 0:
-            for ids in range(0, 5):
-                if ids == 0 and lmList[4][1] > lmList[3][1]:
-                    fingers.append(1)
-                elif ids != 0 and lmList[tipIds[ids]][2] < lmList[tipIds[ids - 2]][2]:
+            if lmList[4][1] > lmList[3][1]:
+                fingers.append(1)
+            else:
+                fingers.append(0)
+            for ids in range(1,5):
+                if lmList[tipIds[ids]][2] < lmList[tipIds[ids]-2][2]:
                     fingers.append(1)
                 else:
                     fingers.append(0)
