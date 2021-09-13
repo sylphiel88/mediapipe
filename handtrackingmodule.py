@@ -47,7 +47,6 @@ class handDetector:
                     fingers.append(1)
                 else:
                     fingers.append(0)
-        print(fingers)
         return fingers
 
 
