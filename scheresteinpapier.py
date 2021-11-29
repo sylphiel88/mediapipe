@@ -6,6 +6,7 @@ import numpy as np
 onebool, twobool, threebool, wahlbool, choosebool, winbool, play = True, True, True, True, False, False, True
 wahl = ""
 wahlp = ""
+wintext = ""
 punktep = 0
 punktec = 0
 
@@ -22,7 +23,6 @@ def exitgame(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         if 1240 < x <= 1280:
             if 0 < y <= 100:
-                cv2.destroyAllWindows()
                 play = False
 
 
@@ -32,12 +32,12 @@ cv2.setMouseCallback('Schere, Stein, Papier', exitgame)
 
 while play:
     sucess, img = cap.read()
-    img = detector.findHands(img)
+    img = detector.findHands(img, draw=False)
     # cTime = time.time()
     # fps = 1 / (cTime - pTime)
     # pTime = cTime
     # cv2.putText(img, str(int(fps)), (40, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 5)
-    positions = detector.findPosition(img)
+    positions = detector.findPosition(img, draw=False)
     fingers = sum(detector.getFingers(positions))
     if (i == 0 and fingers == 1) and onebool:
         i += 1
@@ -107,6 +107,7 @@ while play:
         computer = cv2.addWeighted(computer, 0, wahlpcp, 1, 0)
         img = cv2.addWeighted(img, 0.8, wahlpp, 0.2, 0)
         if fingers == 1:
+            # noinspection PyRedeclaration
             onebool, choosebool, twobool, threebool, wahlbool, choosebool = True, True, True, True, True, False
             i, wahl, wahlp, winbool, j = 0, "", "", False, -1
     cv2.putText(img, "P", (500, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 60, 0), 10)
@@ -126,3 +127,5 @@ while play:
     bild = np.concatenate((img, computer), axis=1)
     cv2.imshow("Schere, Stein, Papier", bild)
     cv2.waitKey(1)
+
+cv2.destroyAllWindows()
